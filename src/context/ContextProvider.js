@@ -5,13 +5,34 @@ import MyContext from './MyContext';
 
 function ContextProvider({ children }) {
   const [planets, setPlanets] = useState([]);
+  const [planetsBackup, setPlanetsBackup] = useState([]);
+  const [filterByName, setFilterByName] = useState({ name: '' });
 
   useEffect(() => {
-    fetchPlanets().then((data) => setPlanets(data.results));
+    fetchPlanets().then((data) => {
+      setPlanetsBackup(data.results);
+      setPlanets(data.results);
+    });
   }, []);
+
+  const filterPlanetsName = async () => {
+    if (filterByName.name !== '') {
+      const planetsFiltered = planetsBackup
+        .filter((planet) => planet.name.includes(filterByName.name));
+      return setPlanets(planetsFiltered);
+    }
+    setPlanets(planetsBackup);
+  };
+
+  useEffect(() => {
+    filterPlanetsName();
+  }, [filterByName]);
 
   const context = {
     data: planets,
+    filterByName,
+    filterPlanetsByName: filterPlanetsName,
+    handleFilterByName: setFilterByName,
   };
 
   return (
@@ -22,7 +43,7 @@ function ContextProvider({ children }) {
 }
 
 ContextProvider.propTypes = {
-  children: PropTypes.objectOf(PropTypes.func).isRequired,
+  children: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default ContextProvider;
