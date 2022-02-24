@@ -8,6 +8,9 @@ function ContextProvider({ children }) {
   const [planetsBackup, setPlanetsBackup] = useState([]);
   const [filterByName, setFilterByName] = useState({ name: '' });
   const [filtersNumber, setFiltersNumber] = useState([]);
+  const [optionsColunm, setOptionsColunm] = useState([
+    'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water',
+  ]);
 
   useEffect(() => {
     fetchPlanets().then((data) => {
@@ -16,7 +19,9 @@ function ContextProvider({ children }) {
     });
   }, []);
 
-  const handleFilters = (filter) => {
+  const handleFilters = (filter, filterColunm) => {
+    setOptionsColunm((prevState) => prevState
+      .filter((options) => options !== filterColunm));
     setFiltersNumber((prevState) => [...prevState, filter]);
   };
 
@@ -66,6 +71,7 @@ function ContextProvider({ children }) {
     handleFilterByName: setFilterByName,
     handleFilters,
     filtersNumber,
+    optionsColunm,
   };
 
   return (

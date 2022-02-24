@@ -3,8 +3,8 @@ import MyContext from '../context/MyContext';
 
 function Forms() {
   const { filterByName, handleFilterByName,
-    handleFilters } = useContext(MyContext);
-  const [inputColunm, setInputColunm] = useState('population');
+    handleFilters, optionsColunm } = useContext(MyContext);
+  const [inputColunm, setInputColunm] = useState(optionsColunm[0]);
   const [inputComparison, setInputComparison] = useState('maior que');
   const [inputValue, setInputValue] = useState(0);
   return (
@@ -32,37 +32,7 @@ function Forms() {
           data-testid="column-filter"
           onChange={ ({ target }) => setInputColunm(target.value) }
         >
-          <option
-            value="population"
-            id="population"
-          >
-            population
-          </option>
-          <option
-            value="orbital_period"
-            id="orbital_period"
-          >
-            orbital_period
-          </option>
-          <option
-            value="diameter"
-            id="diameter"
-          >
-            diameter
-          </option>
-          <option
-            value="rotation_period"
-            id="rotation_period"
-          >
-            rotation_period
-          </option>
-          <option
-            value="surface_water"
-            id="sufarce_water"
-          >
-            surface_water
-          </option>
-          {/* { optionsColunm.map((option, index) => (
+          { optionsColunm.map((option, index) => (
             <option
               value={ option }
               key={ index }
@@ -70,7 +40,7 @@ function Forms() {
             >
               { option }
             </option>
-          )) } */}
+          )) }
         </select>
         <select
           id="inputComparison"
@@ -118,7 +88,7 @@ function Forms() {
               comparison: inputComparison,
               value: inputValue,
             };
-            return handleFilters(filter);
+            return handleFilters(filter, inputColunm);
           } }
         >
           Filtrar
