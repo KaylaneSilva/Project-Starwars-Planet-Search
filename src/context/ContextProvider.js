@@ -7,6 +7,7 @@ function ContextProvider({ children }) {
   const [planets, setPlanets] = useState([]);
   const [planetsBackup, setPlanetsBackup] = useState([]);
   const [filterByName, setFilterByName] = useState({ name: '' });
+  const [filtersNumber, setFiltersNumber] = useState([]);
 
   useEffect(() => {
     fetchPlanets().then((data) => {
@@ -15,7 +16,37 @@ function ContextProvider({ children }) {
     });
   }, []);
 
-  const filterPlanetsName = async () => {
+  const handleFilters = (filter) => {
+    setFiltersNumber((prevState) => [...prevState, filter]);
+  };
+
+  const filtersByNumber = () => {
+    if (filtersNumber.length > 0) {
+      return filtersNumber.map((filter) => {
+        const { colunm, comparison, value } = filter;
+        if (comparison === 'maior que') {
+          const planetsFiltered = planetsBackup
+            .filter((planeta) => Number(planeta[colunm]) > Number(value));
+          return setPlanets(planetsFiltered);
+        }
+        if (comparison === 'menor que') {
+          const planetsFiltered = planetsBackup
+            .filter((planeta) => Number(planeta[colunm]) < Number(value));
+          return setPlanets(planetsFiltered);
+        }
+
+        const planetasFiltrados = planetsBackup
+          .filter((planeta) => Number(planeta[colunm]) === Number(value));
+        return setPlanets(planetasFiltrados);
+      });
+    }
+  };
+
+  useEffect(() => {
+    filtersByNumber();
+  }, [filtersNumber]);
+
+  const filterPlanetsName = () => {
     if (filterByName.name !== '') {
       const planetsFiltered = planetsBackup
         .filter((planet) => planet.name.includes(filterByName.name));
@@ -33,6 +64,8 @@ function ContextProvider({ children }) {
     filterByName,
     filterPlanetsByName: filterPlanetsName,
     handleFilterByName: setFilterByName,
+    handleFilters,
+    filtersNumber,
   };
 
   return (
