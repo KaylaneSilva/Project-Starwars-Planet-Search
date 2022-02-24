@@ -25,17 +25,17 @@ function ContextProvider({ children }) {
       return filtersNumber.map((filter) => {
         const { colunm, comparison, value } = filter;
         if (comparison === 'maior que') {
-          const planetsFiltered = planetsBackup
+          const planetsFiltered = planets
             .filter((planeta) => Number(planeta[colunm]) > Number(value));
           return setPlanets(planetsFiltered);
         }
         if (comparison === 'menor que') {
-          const planetsFiltered = planetsBackup
+          const planetsFiltered = planets
             .filter((planeta) => Number(planeta[colunm]) < Number(value));
           return setPlanets(planetsFiltered);
         }
 
-        const planetasFiltrados = planetsBackup
+        const planetasFiltrados = planets
           .filter((planeta) => Number(planeta[colunm]) === Number(value));
         return setPlanets(planetasFiltrados);
       });
