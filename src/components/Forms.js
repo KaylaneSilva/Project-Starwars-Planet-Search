@@ -3,7 +3,7 @@ import MyContext from '../context/MyContext';
 
 function Forms() {
   const { filterByName, handleFilterByName,
-    handleFilters, optionsColunm } = useContext(MyContext);
+    handleFilters, optionsColunm, removeAllFilters } = useContext(MyContext);
   const [inputColunm, setInputColunm] = useState(optionsColunm[0]);
   const [inputComparison, setInputComparison] = useState('maior que');
   const [inputValue, setInputValue] = useState(0);
@@ -92,6 +92,13 @@ function Forms() {
           } }
         >
           Filtrar
+        </button>
+        <button
+          type="button"
+          data-testid="button-remove-filters"
+          onClick={ () => removeAllFilters() }
+        >
+          Remover Filtragens
         </button>
       </div>
     </form>

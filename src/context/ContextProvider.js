@@ -25,6 +25,10 @@ function ContextProvider({ children }) {
     setFiltersNumber((prevState) => [...prevState, filter]);
   };
 
+  const removeAllFilters = () => {
+    setFiltersNumber([]);
+  };
+
   const filtersByNumber = () => {
     if (filtersNumber.length > 0) {
       return filtersNumber.map((filter) => {
@@ -45,6 +49,12 @@ function ContextProvider({ children }) {
         return setPlanets(planetasFiltrados);
       });
     }
+    return setPlanets(planetsBackup);
+  };
+
+  const deleteFilter = (filtro) => {
+    setFiltersNumber((prevState) => prevState.filter((filter) => filter !== filtro));
+    setPlanets(planetsBackup);
   };
 
   useEffect(() => {
@@ -72,6 +82,8 @@ function ContextProvider({ children }) {
     handleFilters,
     filtersNumber,
     optionsColunm,
+    deleteFilter,
+    removeAllFilters,
   };
 
   return (
