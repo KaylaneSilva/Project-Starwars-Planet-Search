@@ -11,11 +11,23 @@ function ContextProvider({ children }) {
   const [optionsColunm, setOptionsColunm] = useState([
     'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water',
   ]);
+  const [order, setOrder] = useState({});
 
   useEffect(() => {
     fetchPlanets().then((data) => {
-      setPlanetsBackup(data.results);
-      setPlanets(data.results);
+      const planetas = data.results;
+      const planetasOrdenados = planetas.sort((a, b) => {
+        const oneNegative = -1;
+        if (a.name > b.name) {
+          return 1;
+        }
+        if (a.name < b.name) {
+          return oneNegative;
+        }
+        return 0;
+      });
+      setPlanetsBackup(planetas);
+      setPlanets(planetasOrdenados);
     });
   }, []);
 
@@ -57,6 +69,30 @@ function ContextProvider({ children }) {
     setPlanets(planetsBackup);
   };
 
+  const sortPlanets = () => {
+    const { colunm, sort } = order;
+
+    let planetsOrder = [];
+
+    if (order) {
+      const planetWithUnknown = planets.filter((planet) => planet[colunm] === 'unknown');
+      const planetWithoutUnknown = planets
+        .filter((planet) => planet[colunm] !== 'unknown');
+      const planetasOrdenados = planetWithoutUnknown.sort((planetA, planetB) => {
+        if (sort === 'ASC') {
+          return Number(planetA[colunm]) - Number(planetB[colunm]);
+        }
+        return Number(planetB[colunm]) - Number(planetA[colunm]);
+      });
+      planetsOrder = [...planetasOrdenados, ...planetWithUnknown];
+    }
+    return setPlanets(planetsOrder);
+  };
+
+  useEffect(() => {
+    sortPlanets();
+  }, [order]);
+
   useEffect(() => {
     filtersByNumber();
   }, [filtersNumber]);
@@ -84,6 +120,7 @@ function ContextProvider({ children }) {
     optionsColunm,
     deleteFilter,
     removeAllFilters,
+    handleOrderState: setOrder,
   };
 
   return (

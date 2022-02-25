@@ -48,11 +48,20 @@ function Table() {
         <tbody>
           { data && data.map((planets, index) => (
             <tr key={ index }>
-              { titles.map((title) => (
-                <td key={ title }>
-                  { planets[title] }
-                </td>
-              ))}
+              { titles.map((title) => {
+                if (title === 'name') {
+                  return (
+                    <td key={ title } data-testid="planet-name">
+                      { planets[title] }
+                    </td>
+                  );
+                }
+                return (
+                  <td key={ title }>
+                    { planets[title] }
+                  </td>
+                );
+              })}
             </tr>
           ))}
         </tbody>
