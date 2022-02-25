@@ -5,6 +5,7 @@ function Table() {
   const { data, filtersNumber, deleteFilter } = useContext(MyContext);
   const columnHeads = data.map((obj) => Object.keys(obj))[0];
   const titles = columnHeads && columnHeads.filter((names) => names !== 'residents');
+
   return (
     <div>
       <section>
