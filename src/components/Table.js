@@ -71,5 +71,3 @@ function Table() {
   );
 }
 export default Table;
-
-// Name, Rotation Period, Orbital Period, Diameter, Climate, Gravity, Terrain, Surface Water, Population, Films, Created, Edited, Url;
